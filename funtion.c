@@ -1,4 +1,4 @@
-#include "main.h"
+#include "shell.h"
 
 /**
  * execute_ls - Ejecuta el comando `ls` para listar el contenido de un directorio
