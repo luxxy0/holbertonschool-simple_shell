@@ -1,42 +1,42 @@
 #include "shell.h"
 /**
- * main - entry point
+ * main - Shell program entry point
  * Return: 0
  */
 int main(void)
 {
-    char *buffer = NULL;        // Renombrado de 'input' a 'buffer'
-    size_t buffer_size = 0;     // Renombrado de 'len' a 'buffer_size'
-    ssize_t bytes_read;         // Renombrado de 'read' a 'bytes_read'
-    char **command_args;        // Renombrado de 'args' a 'command_args'
+    char *line = NULL;          // Línea de entrada del usuario
+    size_t line_length = 0;     // Longitud de la línea leída
+    ssize_t nread;              // Número de caracteres leídos
+    char **tokens;              // Tokens que contienen el comando y sus argumentos
 
-    int is_terminal = isatty(STDIN_FILENO);  // Renombrado de 'is_interactive' a 'is_terminal'
+    int interactive_mode = isatty(STDIN_FILENO);  // Determina si estamos en modo interactivo
 
     while (1)
     {
-        if (is_terminal)
-            printf("#cisfun$ ");
+        if (interactive_mode)
+            write(STDOUT_FILENO, "#cisfun$ ", 9); // Prompt si estamos en modo interactivo
 
-        bytes_read = getline(&buffer, &buffer_size, stdin);
-        if (bytes_read == -1)
+        nread = getline(&line, &line_length, stdin);
+        if (nread == -1)
         {
-            if (is_terminal)
-                printf("\n");
+            if (interactive_mode)
+                write(STDOUT_FILENO, "\n", 1); // Nueva línea al salir en modo interactivo
             break;
         }
 
-        command_args = tokenize_input(buffer);
-        if (!command_args || !command_args[0])
+        tokens = split_input(line); // Función que divide la entrada en tokens
+        if (tokens == NULL || tokens[0] == NULL)
         {
-            free(command_args);
-            continue;
+            free(tokens);  // Liberamos si no hay comando
+            continue;       // Continuamos a la siguiente iteración
         }
 
-        execute_command(command_args, buffer);
-        free(command_args);
+        run_command(tokens, line); // Ejecutar el comando con sus argumentos
+        free(tokens); // Liberamos la memoria de los tokens
     }
 
-    free(buffer);
-    return (0);
+    free(line); // Liberamos la memoria de la línea de entrada
+    return (0); // Finaliza correctamente
 }
 
