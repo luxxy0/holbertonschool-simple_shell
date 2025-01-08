@@ -1,42 +1,61 @@
 #include "shell.h"
-/**
- * main - Shell program entry point
- * Return: 0
- */
+
 int main(void)
 {
-    char *line = NULL;          // Línea de entrada del usuario
-    size_t line_length = 0;     // Longitud de la línea leída
-    ssize_t nread;              // Número de caracteres leídos
-    char **tokens;              // Tokens que contienen el comando y sus argumentos
+	char *linea = NULL, *token, *completo = NULL;
+	size_t tamanio = 0;
+	ssize_t longitud = 0;
+	char **banderas = malloc(sizeof(char *) * 1024);
+	int i, estado;
+	pid_t hijo;
 
-    int interactive_mode = isatty(STDIN_FILENO);  // Determina si estamos en modo interactivo
+	while (1)
+	{
+		if (isatty(0))
+			printf("shell$ ");
 
-    while (1)
-    {
-        if (interactive_mode)
-            write(STDOUT_FILENO, "#cisfun$ ", 9); // Prompt si estamos en modo interactivo
+		longitud = getline(&linea, &tamanio, stdin);
 
-        nread = getline(&line, &line_length, stdin);
-        if (nread == -1)
-        {
-            if (interactive_mode)
-                write(STDOUT_FILENO, "\n", 1); // Nueva línea al salir en modo interactivo
-            break;
-        }
+	if (longitud == -1 || strcmp(linea, "exit\n"))
+		break;
 
-        tokens = split_input(line); // Función que divide la entrada en tokens
-        if (tokens == NULL || tokens[0] == NULL)
-        {
-            free(tokens);  // Liberamos si no hay comando
-            continue;       // Continuamos a la siguiente iteración
-        }
+		token = strtok(linea, " \t\n");
+		i = 0;
 
-        run_command(tokens, line); // Ejecutar el comando con sus argumentos
-        free(tokens); // Liberamos la memoria de los tokens
-    }
+		while (token != NULL)
+		{
+			banderas[i] = token;
+			token = strtok(NULL, " \t\n");
+			i++;
+		}
+		banderas[i] = NULL;
 
-    free(line); // Liberamos la memoria de la línea de entrada
-    return (0); // Finaliza correctamente
+		completo = chequeo(banderas[0], PATH);
+
+		if (completo == NULL)
+		{
+			printf("shell: No such file or directory\n");
+			free(banderas);
+			free(linea);
+			free(completo);
+			continue; //ignora el codigo de abajo y vuelve a arriba
+		}
+		hijo = fork();
+
+		if (hijo == 0)
+		{
+			if (execve(completo, banderas, environ) == -1)
+			{
+				perror("error de ejecucion");
+				exit(127);
+				free(banderas);
+				free(linea);
+				free(completo);
+			}
+			
+		}
+		else
+		{
+			wait(&estado);
+		}
 }
-
