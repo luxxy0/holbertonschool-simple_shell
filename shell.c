@@ -2,7 +2,7 @@
 
 int main(void)
 {
-	char *linea = NULL, *token, *completo = NULL;
+	char *linea = NULL, *token, *completo = NULL, *PATH = _getenv("PATH");
 	size_t tamanio = 0;
 	ssize_t longitud = 0;
 	char **banderas = malloc(sizeof(char *) * 1024);
@@ -30,7 +30,7 @@ int main(void)
 		}
 		banderas[i] = NULL;
 
-		completo = chequeo(banderas[0], PATH);
+		/*completo = chequeo(banderas[0], PATH);
 
 		if (completo == NULL)
 		{
@@ -39,12 +39,12 @@ int main(void)
 			free(linea);
 			free(completo);
 			continue; //ignora el codigo de abajo y vuelve a arriba
-		}
+		}*/
 		hijo = fork();
 
 		if (hijo == 0)
 		{
-			if (execve(completo, banderas, environ) == -1)
+			if (execve(banderas[0], banderas, NULL) == -1)
 			{
 				perror("error de ejecucion");
 				exit(127);
@@ -58,4 +58,11 @@ int main(void)
 		{
 			wait(&estado);
 		}
-}
+		free(banderas);
+		free(linea);
+		free(completo);
+	}
+	free(linea);
+	return (0);
+}	
+

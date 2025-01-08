@@ -11,6 +11,7 @@
 #include <sys/stat.h>
 
 extern char **environ;
+char *_getenv(const char *name);
 
 /*char......*/
 #endif
