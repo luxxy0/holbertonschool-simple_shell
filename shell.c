@@ -5,7 +5,7 @@ int main(void)
 	char *linea = NULL, *token, *completo = NULL, *PATH = _getenv("PATH");
 	size_t tamanio = 0;
 	ssize_t longitud = 0;
-	char **banderas = malloc(sizeof(char *) * 1024);
+	char **banderas = NULL;
 	int i, estado;
 	pid_t hijo;
 
@@ -16,8 +16,17 @@ int main(void)
 
 		longitud = getline(&linea, &tamanio, stdin);
 
-	if (longitud == -1 || strcmp(linea, "exit\n"))
-		break;
+		if (longitud == -1 || strcmp(linea, "exit\n") == 0)
+			break;
+
+		banderas = malloc(sizeof(char *) * 1024);
+
+		if (!banderas)
+		{
+			perror("malloc");
+			free(linea);
+			exit(1);
+		}
 
 		token = strtok(linea, " \t\n");
 		i = 0;
@@ -30,36 +39,37 @@ int main(void)
 		}
 		banderas[i] = NULL;
 
-		/*completo = chequeo(banderas[0], PATH);
+		completo = chequeo(banderas[0], PATH);
 
 		if (completo == NULL)
 		{
 			printf("shell: No such file or directory\n");
 			free(banderas);
-			free(linea);
-			free(completo);
-			continue; //ignora el codigo de abajo y vuelve a arriba
-		}*/
+
+			continue;
+		}
 		hijo = fork();
 
 		if (hijo == 0)
 		{
-			if (execve(banderas[0], banderas, NULL) == -1)
+			if (execve(completo, banderas, environ) == -1)
 			{
 				perror("error de ejecucion");
-				exit(127);
 				free(banderas);
-				free(linea);
 				free(completo);
+				exit(127);
 			}
-			
+
 		}
-		else
+		else if (hijo > 0)
 		{
 			wait(&estado);
 		}
+		else
+		{
+			perror("fork");
+		}
 		free(banderas);
-		free(linea);
 		free(completo);
 	}
 	free(linea);

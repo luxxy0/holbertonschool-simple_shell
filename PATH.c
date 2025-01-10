@@ -45,7 +45,7 @@ char *locate_command_in_path(char *cmd)
     while (dir)
     {
         dir_len = strlen(dir);
-        cmd_path = malloc(dir_len + cmd_len + 2);  // espacio para '/' y '\0'
+        cmd_path = malloc(dir_len + cmd_len + 2);  /* espacio para '/' y '\0'*/
         if (!cmd_path)
         {
             free(path_dup);
@@ -54,7 +54,7 @@ char *locate_command_in_path(char *cmd)
 
         snprintf(cmd_path, dir_len + cmd_len + 2, "%s/%s", dir, cmd);
 
-        if (access(cmd_path, X_OK) == 0)  // Verifica si el comando es ejecutable
+        if (access(cmd_path, X_OK) == 0)  /* Verifica si el comando es ejecutable*/
         {
             free(path_dup);
             return (cmd_path);

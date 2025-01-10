@@ -12,6 +12,7 @@
 
 extern char **environ;
 char *_getenv(const char *name);
+char *chequeo(char *comando, char *PATH);
 
 /*char......*/
 #endif
