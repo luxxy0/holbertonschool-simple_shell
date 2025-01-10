@@ -23,7 +23,7 @@ char *chequeo(char *comando, char *path)
 	char *tokenizador;
 	struct stat st;
 
-	if (comando[0] == '/')
+	if (comando[0] == '/' || comando[0] == '.')
 	{
 		if (stat(comando, &st) == 0)
 		{
