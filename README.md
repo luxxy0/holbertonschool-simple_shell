@@ -28,12 +28,11 @@ The shell uses system calls such as `fork`, `execve`, and `wait` to manage proce
 
 ## File Descriptions
 
-| File         | Description                                                             |
-| ------------ | ----------------------------------------------------------------------- |
-| `shell.h`    | Header file containing global declarations and library includes.        |
-| `shell.c`    | Main entry point, prompt handling, and input processing.                |
-| `path.c`     | Functions to locate commands in the PATH and validate executables.      |
-| `function.c` | Implements functions for environment variable handling and tokenization.|
+| File         | Description                                                                      |
+| ------------ | -------------------------------------------------------------------------------- |
+| `shell.h`    | Header file containing global declarations and library includes.                 |
+| `shell.c`    | Main entry point, prompt handling, and input processing.                         | 
+| `function.c` | Implements functions for environment variable handling, tokenization and PATH.   |
 
 ---
 
