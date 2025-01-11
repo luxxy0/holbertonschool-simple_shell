@@ -19,7 +19,7 @@ The shell uses system calls such as `fork`, `execve`, and `wait` to manage proce
 - **Command Execution:** Executes both built-in commands and external programs.
 - **PATH Integration:** Dynamically resolves commands by searching through directories in the system's PATH.
 - **Built-in Commands:**
-  - `exit`: Exits the shell program.
+ - `exit`: Exits the shell program.
   - Access and display environment variables using the `env` command.
 - **Error Handling:** Detects invalid commands and handles end-of-file (Ctrl+D) gracefully.
 - **Modular Design:** Separate source files for core components, ensuring maintainability and readability.
