@@ -56,10 +56,133 @@ To compile the project, ensure you have a C compiler (e.g., GCC) installed. Use 
 ```bash
 gcc -Wall -Werror -Wextra -pedantic *.c -o shell
 
+---
+
 ## Usage
 
 Para ejecutar el shell, compila el programa y ejecútalo con el siguiente comando:
 
 ```bash
 ./shell
+
+---
+
+## Example Session
+
+```bash
+shell$ ls
+README.md  shell.c  shell.h  path.c  function.c
+
+shell$ env
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+HOME=/home/user
+...
+
+shell$ exit
+
+---
+
+## Functions
+
+### `char *_getenv(const char *name)`
+Searches for an environment variable by name and returns its value.
+
+- **Parameters:**
+  - `name`: The name of the environment variable to search for.
+- **Returns:**
+  - The value of the environment variable or `NULL` if not found.
+
+---
+
+### `char *chequeo(char *comando, char *PATH)`
+Checks if a command exists in the PATH and returns its full path if found.
+
+- **Parameters:**
+  - `comando`: The command to check.
+  - `PATH`: The system PATH to search through.
+- **Returns:**
+  - The full path of the command if found, or `NULL` if not found.
+
+---
+
+### `char *fetch_env_var(const char *var_name)`
+Fetches the value of an environment variable.
+
+- **Parameters:**
+  - `var_name`: The name of the environment variable.
+- **Returns:**
+  - The value of the environment variable or `NULL`.
+
+---
+
+### `char *locate_command_in_path(char *cmd)`
+Finds the executable command in the PATH and verifies if it's valid.
+
+- **Parameters:**
+  - `cmd`: The command to locate.
+- **Returns:**
+  - The full path of the executable command or `NULL` if not found.
+
+---
+
+## Flowchart
+
+The process flow for the shell is as follows:
+
+1. Display the prompt (`shell$`).
+2. Read user input.
+3. Tokenize input into arguments.
+4. Check if the command exists in the `PATH`.
+5. Execute the command in a child process.
+6. Handle errors (invalid commands or system calls).
+7. Wait for process completion.
+8. Loop back to the prompt until `exit` is called.
+
+### Visual Representation
+
+```plaintext
++---------------------------+
+| Display prompt (shell$)   |
++------------+--------------+
+             |
+             v
++---------------------------+
+| Read user input           |
++------------+--------------+
+             |
+             v
++---------------------------+
+| Tokenize input            |
++------------+--------------+
+             |
+             v
++---------------------------+
+| Check command in PATH     |
++------------+--------------+
+             |
+   +---------+---------+
+   |                   |
+   v                   v
++----------------+   +----------------+
+| Command exists |   | Command invalid|
+| Execute        |   | Show error msg |
++-------+--------+   +----------------+
+        |
+        v
++---------------------------+
+| Wait for process completion|
++------------+--------------+
+             |
+             v
++---------------------------+
+| Loop back to prompt       |
+| until exit is called      |
++---------------------------+
+
+---
+
+## Authors
+
+- **Luciana Diaz**  
+- **Juan Ignacio Daste**
 
