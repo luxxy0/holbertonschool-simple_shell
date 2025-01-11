@@ -55,7 +55,7 @@ To compile the project, ensure you have a C compiler (e.g., GCC) installed. Use 
 
 ```bash
 gcc -Wall -Werror -Wextra -pedantic *.c -o shell
-
+```
 ---
 
 ## Usage
@@ -64,7 +64,7 @@ Para ejecutar el shell, compila el programa y ejecútalo con el siguiente comand
 
 ```bash
 ./shell
-
+```
 ---
 
 ## Example Session
@@ -79,7 +79,7 @@ HOME=/home/user
 ...
 
 shell$ exit
-
+```
 ---
 
 ## Functions
@@ -178,7 +178,7 @@ The process flow for the shell is as follows:
 | Loop back to prompt       |
 | until exit is called      |
 +---------------------------+
-
+```
 ---
 
 ## Authors
