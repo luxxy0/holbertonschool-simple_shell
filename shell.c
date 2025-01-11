@@ -1,5 +1,11 @@
 #include "shell.h"
 
+/**
+ * main - Entry of the program.
+ * linea - Stores the line entered by the user.
+ * Return: 0.
+ */
+
 int main(void)
 {
 	char *linea = NULL, *token, *completo = NULL, *PATH = _getenv("PATH");
@@ -74,5 +80,5 @@ int main(void)
 	}
 	free(linea);
 	return (0);
-}	
+}
 
